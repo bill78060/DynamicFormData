@@ -1,0 +1,172 @@
+<!-- dynamicformapp/templates/dynamicformapp/dynamic_form.html -->
+<!-- <style>
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .form-field {
+        margin-right: 10px;
+    }
+
+    .form-label {
+        margin-right: 5px;
+    }
+</style>
+
+<form method="post" action="{% url 'dynamic_form_view' %}" id="dynamic-form">
+    {% csrf_token %}
+    <div id="form-container">
+        <div class="form-row">
+            <label for="{{ form.name.id_for_label }}" class="form-label">Name:</label>
+            <div class="form-field">{{ form.name }}</div>
+
+            <label for="{{ form.password.id_for_label }}" class="form-label">Password:</label>
+            <div class="form-field">{{ form.password }}</div>
+
+            <label for="{{ form.data.id_for_label }}" class="form-label">Data:</label>
+            <div class="form-field">{{ form.data }}</div>
+        </div>
+    </div>
+    <button type="button" id="add-data">Add Data</button>
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const formContainer = $('#form-container');
+        const addDataButton = $('#add-data');
+        let fieldIndex = 1;  // Initial index for dynamic fields
+
+        addDataButton.on('click', function () {
+            formContainer.append(`
+                <div class="form-row">
+                    <label for="id_name_${fieldIndex}" class="form-label">Name:</label>
+                    <div class="form-field"><input type="text" name="name_${fieldIndex}" id="id_name_${fieldIndex}"></div>
+
+                    <label for="id_password_${fieldIndex}" class="form-label">Password:</label>
+                    <div class="form-field"><input type="text" name="password_${fieldIndex}" id="id_password_${fieldIndex}"></div>
+
+                    <label for="id_data_${fieldIndex}" class="form-label">Data:</label>
+                    <div class="form-field"><input type="text" name="data_${fieldIndex}" id="id_data_${fieldIndex}"></div>
+                </div>
+            `);
+            fieldIndex++;
+        });
+    });
+</script> -->
+
+ 
+ <!-- dynamicformapp/templates/dynamicformapp/dynamic_form.html -->
+<!-- <form method="post" action="{% url 'dynamic_form_view' %}" id="dynamic-form">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <div id="form-container">
+        {{ formset.non_form_errors }}
+        {% for form in formset %}
+            {{ form.management_form }}
+            <div class="form-row">
+                {{ form.id }}
+                <label for="{{ form.name.id_for_label }}" class="form-label">Name:</label>
+                <div class="form-field">{{ form.name }}</div>
+
+                <label for="{{ form.password.id_for_label }}" class="form-label">Password:</label>
+                <div class="form-field">{{ form.password }}</div>
+
+                <label for="{{ form.data.id_for_label }}" class="form-label">Data:</label>
+                <div class="form-field">{{ form.data }}</div>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-data">Add Data</button>
+    <button type="submit">Submit</button>
+</form> -->
+
+
+<!-- dynamicformapp/templates/dynamicformapp/dynamic_form.html -->
+<!-- dynamicformapp/templates/dynamicformapp/dynamic_form.html -->
+
+<style>
+    .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .form-field {
+        margin-right: 10px;
+    }
+
+    .form-label {
+        margin-right: 5px;
+    }
+</style>
+
+<form method="post" action="{% url 'dynamic_form_view' %}" id="dynamic-form">
+    {% csrf_token %}
+    <div id="form-container">
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="form-row">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-data">Add Data</button>
+    <button type="submit">Submit</button>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const formContainer = $('#form-container');
+        const addDataButton = $('#add-data');
+        let totalForms = $('#id_form-TOTAL_FORMS');
+
+        addDataButton.on('click', function () {
+            // Manually handle formset management form
+            const managementForm = formContainer.find('input[name="form-TOTAL_FORMS"]');
+            const newFormIndex = parseInt(managementForm.val());
+
+            // Create a new form row dynamically
+            const newForm = formContainer.find('.form-row:first').clone(true);
+            newForm.find('input[type="text"]').val('');
+            
+            // Update input names to include a unique index
+            newForm.find('input, select, textarea').each(function () {
+                const name = $(this).attr('name');
+                const newName = name.replace(/\d+/, newFormIndex);
+                $(this).attr('name', newName);
+                $(this).attr('id', `id_${newName}`);
+            });
+
+            newForm.insertAfter(formContainer.find('.form-row:last'));
+
+            // Update the management form
+            managementForm.val(newFormIndex + 1);
+        });
+    });
+</script>
+
+
+
+<!-- <script>
+    $(document).ready(function () {
+        const formContainer = $('#form-container');
+        const addDataButton = $('#add-data');
+        let totalForms = $('#id_form-TOTAL_FORMS');
+
+        addDataButton.on('click', function () {
+            const newForm = formContainer.find('.form-row:first').clone(true);
+            newForm.find('input').val('');
+            newForm.insertAfter(formContainer.find('.form-row:last'));
+            totalForms.val(parseInt(totalForms.val()) + 1);
+        });
+    });
+</script> -->
+
+
+
+
